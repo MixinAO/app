@@ -4,7 +4,7 @@ import {
   DaoSortBy,
   IDaoQueryParams,
   SortDirection,
-} from '@aragon/sdk-client';
+} from '@mixinao/sdk-client';
 import {InfiniteData, useInfiniteQuery} from '@tanstack/react-query';
 
 import {CHAIN_METADATA, SupportedChainID} from 'utils/constants';

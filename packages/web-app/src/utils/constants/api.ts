@@ -16,6 +16,7 @@ export const SUBGRAPH_API_URL: SubgraphNetworkUrl = {
     'https://subgraph.satsuma-prod.com/qHR2wGfc5RLi6/aragon/osx-mumbai/version/v1.1.1/api',
   arbitrum: undefined,
   'arbitrum-test': undefined,
+  mvm: 'https://graph.mvg.finance/',
   unsupported: undefined,
 };
 
@@ -32,6 +33,7 @@ export const alchemyApiKeys: AlchemyApiKeys = {
   goerli: import.meta.env.VITE_ALCHEMY_KEY_GOERLI as string,
   polygon: import.meta.env.VITE_ALCHEMY_KEY_POLYGON_MAINNET as string,
   mumbai: import.meta.env.VITE_ALCHEMY_KEY_POLYGON_MUMBAI as string,
+  mvm: undefined,
   unsupported: undefined,
 };
 
@@ -55,6 +57,7 @@ export const ASSET_PLATFORMS: Record<SupportedNetworks, string | null> = {
   polygon: 'polygon-pos',
   mumbai: null,
   unsupported: null,
+  mvm: 'ethereum',
 };
 
 export const NATIVE_TOKEN_ID = {

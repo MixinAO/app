@@ -17,6 +17,17 @@ import {TimeFilter, TransferTypes} from './constants';
 /*************************************************
  *                   Finance types               *
  *************************************************/
+/** MVM Balance type*/
+export type MVMBalance = {
+  balance: string,
+  contractAddress: string,
+  decimals: number,
+  mixinAssetId: string,
+  name: string,
+  symbol: string,
+  type: string
+}
+
 /**
  * Token with basic information populated from external api and/or blockchain
  * Market information is not included

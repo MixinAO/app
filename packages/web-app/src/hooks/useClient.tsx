@@ -4,7 +4,7 @@ import {
   ContextParams,
   LIVE_CONTRACTS,
   SupportedNetworksArray,
-} from '@aragon/sdk-client';
+} from '@mixinao/sdk-client';
 
 import {useNetwork} from 'context/network';
 import React, {createContext, useContext, useEffect, useState} from 'react';

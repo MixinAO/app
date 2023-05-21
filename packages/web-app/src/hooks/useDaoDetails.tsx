@@ -1,4 +1,4 @@
-import {Client, DaoDetails} from '@aragon/sdk-client';
+import {Client, DaoDetails} from '@mixinao/sdk-client';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {useQuery} from '@tanstack/react-query';
 import {isAddress} from 'ethers/lib/utils';

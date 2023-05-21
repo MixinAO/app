@@ -1,4 +1,4 @@
-import {LIVE_CONTRACTS, SupportedNetworks} from '@aragon/sdk-client';
+import {LIVE_CONTRACTS, SupportedNetworks} from '@mixinao/sdk-client';
 import {JsonRpcProvider} from '@ethersproject/providers';
 import {SignerValue, useSigner} from 'context/signer';
 import {BigNumber} from 'ethers';
@@ -38,7 +38,7 @@ export const useWallet = (): IUseWallet => {
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   const provider = useMemo(() => {
-    if (['mumbai', 'polygon'].includes(network)) {
+    if (['mumbai', 'polygon', 'mvm'].includes(network)) {
       return new JsonRpcProvider(CHAIN_METADATA[network].rpc[0], {
         chainId: CHAIN_METADATA[network].id,
         name: translateToNetworkishName(network),
@@ -64,10 +64,10 @@ export const useWallet = (): IUseWallet => {
     if (provider && address) {
       provider?.lookupAddress(address).then((name: string | null) => {
         name ? setEnsName(name) : setEnsName('');
-      });
+      }).catch(e=>setEnsName(''));
       provider?.getAvatar(address).then((avatarUrl: string | null) => {
         avatarUrl ? setEnsAvatarUrl(avatarUrl) : setEnsAvatarUrl('');
-      });
+      }).catch(e=>setEnsAvatarUrl(''));
     }
   }, [address, provider]);
 

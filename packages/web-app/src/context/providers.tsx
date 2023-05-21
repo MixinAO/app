@@ -9,7 +9,7 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import {
   LIVE_CONTRACTS,
   SupportedNetworks as sdkSupportedNetworks,
-} from '@aragon/sdk-client';
+} from '@mixinao/sdk-client';
 import {useWallet} from 'hooks/useWallet';
 import {
   alchemyApiKeys,
@@ -81,7 +81,7 @@ function getInfuraProvider(network: SupportedNetworks) {
     return new InfuraProvider(NW_ARB, infuraApiKey);
   } else if (network === 'arbitrum-test') {
     return new InfuraProvider(NW_ARB_GOERLI, infuraApiKey);
-  } else if (network === 'mumbai' || network === 'polygon') {
+  } else if (network === 'mumbai' || network === 'polygon' || network === 'mvm') {
     return new JsonRpcProvider(CHAIN_METADATA[network].rpc[0], {
       chainId: CHAIN_METADATA[network].id,
       name: translateToNetworkishName(network),

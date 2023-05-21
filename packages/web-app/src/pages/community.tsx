@@ -59,8 +59,9 @@ const Community: React.FC = () => {
   const handleSecondaryButtonClick = () => {
     window.open(
       CHAIN_METADATA[network].explorer +
-        '/token/tokenholderchart/' +
-        daoToken?.address,
+        'token/' +
+        daoToken?.address +
+        '/token-holders',
       '_blank'
     );
   };

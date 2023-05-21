@@ -3,7 +3,7 @@ import {
   MultisigClient,
   TokenVotingClient,
   VoteValues,
-} from '@aragon/sdk-client';
+} from '@mixinao/sdk-client';
 
 import {HookData, ProposalId} from 'utils/types';
 import {PluginTypes, usePluginClient} from './usePluginClient';

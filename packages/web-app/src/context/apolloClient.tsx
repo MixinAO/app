@@ -106,6 +106,11 @@ export const goerliClient = new ApolloClient({
   link: restLink.concat(new HttpLink({uri: SUBGRAPH_API_URL['goerli']})),
 });
 
+export const mvmClient = new ApolloClient({
+  cache,
+  link: restLink.concat(new HttpLink({uri: SUBGRAPH_API_URL['mvm']})),
+})
+
 const mumbaiClient = new ApolloClient({
   cache,
   link: restLink.concat(new HttpLink({uri: SUBGRAPH_API_URL['mumbai']})),
@@ -127,6 +132,7 @@ const client: Record<
   mumbai: mumbaiClient,
   arbitrum: undefined,
   'arbitrum-test': arbitrumTestClient,
+  mvm: undefined,
   unsupported: undefined,
 };
 

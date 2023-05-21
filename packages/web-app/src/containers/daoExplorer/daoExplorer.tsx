@@ -124,11 +124,11 @@ export const DaoExplorer = () => {
                 ensName={toDisplayEns(dao.ensDomain)}
                 logo={dao.metadata.avatar}
                 description={dao.metadata.description}
-                chainId={dao.chain}
+                chainId={73927}
                 onClick={() =>
                   handleDaoClicked(
                     toDisplayEns(dao.ensDomain) || dao.address,
-                    dao.chain
+                    73927
                   )
                 }
                 daoType={

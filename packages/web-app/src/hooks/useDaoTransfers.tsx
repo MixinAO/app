@@ -23,18 +23,29 @@ import {useProviders} from 'context/providers';
 
 export type IAssetTransfers = Transfer[];
 
-type AlchemyTransfer = {
+type MVMScanTransfer = {
+  blockHash: string;
+  blockNumber: string;
+  confirmations: string;
+  contractAddress: string;
+  cumulativeGasUsed: string;
   from: string;
-  rawContract: {
-    address: string;
-    value: string;
-    decimals: string;
-  };
-  metadata: {
-    blockTimestamp: string;
-  };
+  gas: string;
+  gasPrice: string;
+  gasUsed: string;
   hash: string;
-};
+  input: string;
+  logIndex: string;
+  nonce: string;
+  timeStamp: string;
+  to: string;
+  tokenDecimal: string;
+  tokenName: string;
+  tokenSymbol: string;
+  transactionIndex: string;
+  value: string;
+}
+
 
 function sortByCreatedAt(a: Transfer, b: Transfer): number {
   return b.creationDate.getTime() - a.creationDate.getTime();
@@ -57,31 +68,7 @@ export const useDaoTransfers = (
   const pendingDepositsTxs = useReactiveVar(pendingDeposits);
   const {infura: provider} = useProviders();
 
-  const url = `${CHAIN_METADATA[network].alchemyApi}/${alchemyApiKeys[network]}`;
-
-  // Memoize options to prevent unnecessary re-renders
-  const options = useMemo(
-    () => ({
-      method: 'POST',
-      headers: {accept: 'application/json', 'content-type': 'application/json'},
-      body: JSON.stringify({
-        id: 1,
-        jsonrpc: '2.0',
-        method: 'alchemy_getAssetTransfers',
-        params: [
-          {
-            fromBlock: '0x0',
-            toBlock: 'latest',
-            toAddress: daoAddressOrEns,
-            category: ['erc20'],
-            withMetadata: true,
-            excludeZeroValue: true,
-          },
-        ],
-      }),
-    }),
-    [daoAddressOrEns]
-  );
+  const url = `${CHAIN_METADATA[network].etherscanApi}?module=account&action=tokentx&address=${daoAddressOrEns}`;
 
   useEffect(() => {
     async function getTransfers() {
@@ -97,37 +84,29 @@ export const useDaoTransfers = (
 
         let subgraphTransfers: Transfer[] = [];
 
-        // Fetch the token list using the Alchemy API
-        const res = await fetch(url, options);
-        const alchemyTransfersList = await res.json();
+        // Fetch the token list using the MVM SCAN API
+        const res = await fetch(url);
+        const TransfersList = await res.json();
+        if (TransfersList.result == null) return;
 
         // filter the erc20 token deposits
         const erc20DepositsListPromises =
-          alchemyTransfersList.result.transfers.map(
-            async ({from, rawContract, metadata, hash}: AlchemyTransfer) => {
-              const {name, symbol, decimals} = await getTokenInfo(
-                rawContract.address,
-                provider,
-                CHAIN_METADATA[network].nativeCurrency
-              );
-
-              return {
-                type: 'deposit',
-                tokenType: 'erc20',
-                amount: BigInt(rawContract.value),
-                creationDate: new Date(metadata.blockTimestamp),
-                from: from,
-                to: daoAddressOrEns,
-                token: {
-                  address: rawContract.address,
-                  decimals,
-                  name,
-                  symbol,
-                },
-                transactionId: hash,
-              };
-            }
-          );
+          TransfersList.result.map((e: MVMScanTransfer) => ({
+            type: 'deposit',
+            tokenType: 'erc20',
+            amount: BigInt(e.value),
+            creationDate: new Date(e.timeStamp),
+            from: e.from,
+            to: daoAddressOrEns,
+            token: {
+              address: e.contractAddress,
+              decimals: e.tokenDecimal,
+              name: e.tokenName,
+              symbol: e.tokenSymbol,
+            },
+            transactionId: e.hash,
+          })
+        );
 
         const erc20DepositsList = await Promise.all(erc20DepositsListPromises);
 
@@ -183,7 +162,6 @@ export const useDaoTransfers = (
     client?.methods,
     daoAddressOrEns,
     network,
-    options,
     pendingDepositsTxs,
     provider,
     url,

@@ -2,7 +2,7 @@ import {
   ContextPlugin,
   MultisigClient,
   TokenVotingClient,
-} from '@aragon/sdk-client';
+} from '@mixinao/sdk-client';
 import {useEffect, useState} from 'react';
 
 import {useClient} from './useClient';

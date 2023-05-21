@@ -6,6 +6,7 @@ import {HookData} from 'utils/types';
 import {getTokenInfo} from 'utils/tokens';
 import {useSpecificProvider} from 'context/providers';
 import {useNetwork} from 'context/network';
+import {MVMBalance} from 'utils/types';
 
 export const useDaoBalances = (
   daoAddress: string
@@ -18,26 +19,8 @@ export const useDaoBalances = (
 
   const provider = useSpecificProvider(CHAIN_METADATA[network].id);
 
-  // Construct the Alchemy API URL
-  const url = `${CHAIN_METADATA[network].alchemyApi}/${alchemyApiKeys[network]}`;
-
-  // Memoize the options object to prevent unnecessary re-renders
-  const options = useMemo(
-    () => ({
-      method: 'POST',
-      headers: {
-        accept: 'application/json',
-        'content-type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: 1,
-        jsonrpc: '2.0',
-        method: 'alchemy_getTokenBalances',
-        params: [daoAddress],
-      }),
-    }),
-    [daoAddress]
-  );
+  // Construct the MVM API URL
+  const url = `${CHAIN_METADATA[network].etherscanApi}?module=account&action=tokenlist&address=${daoAddress}`
 
   // Use the useEffect hook to fetch DAO balances
   useEffect(() => {
@@ -45,50 +28,37 @@ export const useDaoBalances = (
       try {
         setIsLoading(true);
 
-        // Fetch the token list using the Alchemy API
-        const res = await fetch(url, options);
+        // Fetch the token list using from MVM SCAN API
+        const res = await fetch(url);
         const tokenList = await res.json();
+        
         let nativeTokenBalances = [] as Array<AssetBalance>;
-
-        // Filter out tokens with a zero balance
-        const nonZeroBalances = tokenList.result.tokenBalances?.filter(
-          (token: {tokenBalance: string}) => {
-            return BigInt(token.tokenBalance) !== BigInt(0);
-          }
-        );
 
         const fetchNativeCurrencyBalance = provider.getBalance(daoAddress);
 
-        // Define a list of promises to fetch ERC20 token balances
-        const tokenListPromises = nonZeroBalances.map(
-          async ({
-            contractAddress,
-            tokenBalance,
-          }: {
-            contractAddress: string;
-            tokenBalance: string;
-          }) => {
-            const {decimals, name, symbol} = await getTokenInfo(
-              contractAddress,
-              provider,
-              CHAIN_METADATA[network].nativeCurrency
-            );
-            return {
-              address: contractAddress,
-              name,
-              symbol,
-              updateDate: new Date(),
-              type: TokenType.ERC20,
-              balance: BigInt(tokenBalance),
-              decimals,
-            };
+        const erc20TokenList = tokenList.result.filter(
+          (token: MVMBalance) => {
+            return token.type === 'ERC-20';
           }
         );
 
+        // Define a list of promises to fetch ERC20 token balances
+        const erc20balances = erc20TokenList.map((e: MVMBalance) => (
+            {
+              address: e.contractAddress,
+              name: e.name,
+              symbol: e.symbol,
+              updateDate: new Date(),
+              type: TokenType.ERC20,
+              balance: BigInt(e.balance),
+              decimals: e.decimals,
+            }
+          )
+        );
+
         // Wait for both native currency and ERC20 balances to be fetched
-        const [nativeCurrencyBalance, erc20balances] = await Promise.all([
+        const [nativeCurrencyBalance] = await Promise.all([
           fetchNativeCurrencyBalance,
-          Promise.all(tokenListPromises),
         ]);
 
         // If the native currency balance is non-zero, add it to the list
@@ -113,7 +83,7 @@ export const useDaoBalances = (
     }
 
     if (daoAddress) getBalances();
-  }, [daoAddress, network, options, provider, url]);
+  }, [daoAddress, network, provider, url]);
 
   return {data, error, isLoading};
 };

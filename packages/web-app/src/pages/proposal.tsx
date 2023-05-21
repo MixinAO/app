@@ -8,7 +8,7 @@ import {
   TokenVotingProposal,
   VoteValues,
   VotingMode,
-} from '@aragon/sdk-client';
+} from '@mixinao/sdk-client';
 import {
   Breadcrumb,
   ButtonText,

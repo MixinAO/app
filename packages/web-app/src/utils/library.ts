@@ -11,7 +11,7 @@ import {
   TokenVotingClient,
   VotingMode,
   Context as SdkContext,
-} from '@aragon/sdk-client';
+} from '@mixinao/sdk-client';
 import {resolveIpfsCid} from '@aragon/sdk-common';
 import {Address} from '@aragon/ui-components/dist/utils/addresses';
 import {NavigationDao} from 'context/apolloClient';
@@ -503,6 +503,9 @@ export function sleepFor(time = 600) {
 export const translateToAppNetwork = (
   sdkNetwork: SdkContext['network']
 ): SupportedNetworks => {
+  if (sdkNetwork.chainId == 73927){
+    return 'mvm';
+  }
   switch (sdkNetwork.name) {
     case 'homestead':
       return 'ethereum';
@@ -537,6 +540,8 @@ export function translateToNetworkishName(
       return 'homestead';
     case 'goerli':
       return 'goerli';
+    case 'mvm':
+      return 'mvm'      
   }
 
   return 'unsupported';
