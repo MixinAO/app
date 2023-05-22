@@ -248,9 +248,8 @@ const CreateDaoProvider: React.FC = ({children}) => {
               votingSettings: votingSettings,
               newToken: getErc20PluginParams(),
             },
-            network
           );
-
+          tokenVotingPlugin.id = '0xf20DA30b2Cd9161253Ba75daB42b6BD26B753CA2';
         plugins.push(tokenVotingPlugin);
         break;
       }

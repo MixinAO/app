@@ -16,7 +16,7 @@ export const SUBGRAPH_API_URL: SubgraphNetworkUrl = {
     'https://subgraph.satsuma-prod.com/qHR2wGfc5RLi6/aragon/osx-mumbai/version/v1.1.1/api',
   arbitrum: undefined,
   'arbitrum-test': undefined,
-  mvm: 'https://graph.mvg.finance/',
+  mvm: 'https://graph.mvg.finance/subgraphs/name/osx-mainnet',
   unsupported: undefined,
 };
 
