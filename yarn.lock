@@ -3144,10 +3144,10 @@
   dependencies:
     ethers "^5.6.2"
 
-"@mixinao/sdk-client@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.npmjs.org/@mixinao/sdk-client/-/sdk-client-1.6.1.tgz#c9a659b487858e53c1718c5f1bd67198e943dff6"
-  integrity sha512-WKfzYEXveTH6+ttzHCIQ0nwKfHM+n0iCrYNcCwUxS5ISHwFpH1zyvwWWqCbG3RD36uVOKICUOfc7NwMxpEcVkQ==
+"@mixinao/sdk-client@1.6.2":
+  version "1.6.2"
+  resolved "https://registry.npmjs.org/@mixinao/sdk-client/-/sdk-client-1.6.2.tgz#963a23910e3d8b734668deefe114f28463103223"
+  integrity sha512-DXVcwpb5W6qKdRRZyqMuWakvccXvgAf68D7iCZxKm50BMI5XDuBiB6/3Er6y1DJgdOHZL5xKNEl9+DUViGJ9IA==
   dependencies:
     "@aragon/sdk-common" "^1.2.0"
     "@aragon/sdk-ipfs" "^1.1.0"

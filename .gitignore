@@ -46,3 +46,5 @@ subgraph.yaml
 packages/ui-components/out*
 
 packages/web-app/tests/e2e/videos/*
+# Local Netlify folder
+.netlify
