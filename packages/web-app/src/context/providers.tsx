@@ -82,14 +82,6 @@ function getInfuraProvider(network: SupportedNetworks) {
   } else if (network === 'arbitrum-test') {
     return new InfuraProvider(NW_ARB_GOERLI, infuraApiKey);
   } else if (network === 'mumbai' || network === 'polygon' || network === 'mvm') {
-    console.log(new JsonRpcProvider(CHAIN_METADATA[network].rpc[0], {
-      chainId: CHAIN_METADATA[network].id,
-      name: translateToNetworkishName(network),
-      ensAddress:
-        LIVE_CONTRACTS[
-          translateToNetworkishName(network) as sdkSupportedNetworks
-        ].ensRegistry,
-    }));
     return new JsonRpcProvider(CHAIN_METADATA[network].rpc[0], {
       chainId: CHAIN_METADATA[network].id,
       name: translateToNetworkishName(network),

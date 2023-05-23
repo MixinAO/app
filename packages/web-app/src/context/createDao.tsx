@@ -235,21 +235,21 @@ const CreateDaoProvider: React.FC = ({children}) => {
         const [params, network] = getMultisigPluginInstallParams();
         const multisigPlugin = MultisigClient.encoding.getPluginInstallItem(
           params,
-          network
         );
+        multisigPlugin.id = '0xC9B912D90276651eF6dD274c0C9Cb0860D223CDE';
         plugins.push(multisigPlugin);
         break;
       }
       case 'token': {
         const [votingSettings, network] = getVoteSettings();
         const tokenVotingPlugin =
-          TokenVotingClient.encoding.getPluginInstallItem(
-            {
-              votingSettings: votingSettings,
-              newToken: getErc20PluginParams(),
-            },
-          );
-          tokenVotingPlugin.id = '0xf20DA30b2Cd9161253Ba75daB42b6BD26B753CA2';
+        TokenVotingClient.encoding.getPluginInstallItem(
+          {
+            votingSettings: votingSettings,
+            newToken: getErc20PluginParams(),
+          },
+        );
+        tokenVotingPlugin.id = '0xf20DA30b2Cd9161253Ba75daB42b6BD26B753CA2';
         plugins.push(tokenVotingPlugin);
         break;
       }
