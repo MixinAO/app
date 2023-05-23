@@ -103,7 +103,7 @@ async function fetchTokenData(
   if (
     !nativeToken &&
     symbol &&
-    ['goerli', 'mumbai'].includes(network) &&
+    ['mvm'].includes(network) &&
     TOP_ETH_SYMBOL_ADDRESSES[symbol.toLowerCase()]
   ) {
     fetchAddress = TOP_ETH_SYMBOL_ADDRESSES[symbol.toLowerCase()];
